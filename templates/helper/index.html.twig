@@ -1,0 +1,18 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_api_rest_acciones')}}">Helper</a></li>
+
+</ol>
+</nav>
+<h1>Helper</h1>
+<p>{{saludo}}</p>
+<p>{{saludo2}}</p>
+
+{% endblock %}

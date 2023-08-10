@@ -1,0 +1,16 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<h1>Utilidades</h1>
+<ul>
+    <li><a href="{{path('utilidades_mail')}}">Envio de e-mail</a></li>
+    <li><a href="{{path('utilidades_api_rest')}}">API REST</a></li>
+    <li><a href="{{path('utilidades_api_rest_acciones')}}">API REST II</a></li>
+    <li><a href="{{path('utilidades_fileSystem')}}">FyleSystem</a></li>
+    <li><a href="{{path('utilidades_pdf')}}">Crear PDF</a></li>
+    <li><a href="{{path('helper_saludo')}}">Helper</a></li>
+
+</ul>
+{% endblock %}

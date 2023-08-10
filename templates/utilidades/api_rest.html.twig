@@ -1,0 +1,41 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_api_rest')}}">API REST</a></li>
+</ol>
+</nav>
+<h1>API REST</h1>
+
+<p>composer require symfony/http-client</p>
+<p><strong>API REST:</strong> https://jsonplaceholder.typicode.com/guide/</p>
+
+<ul>
+    <li><a href="{{ path('utilidades_api_rest_post') }}">Añadir elemento</a></li>
+</ul>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+
+                <th>Descripción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for dato in response.toArray() %}
+        <tr>
+            <td>{{ dato.id }}</td>
+            <td>{{ dato.body}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

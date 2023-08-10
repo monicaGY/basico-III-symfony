@@ -1,0 +1,45 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_api_rest')}}">API REST</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_api_rest_post')}}">Añadir elemento</a></li>
+</ol>
+</nav>
+
+<h1>Crear publicación</h1>
+<form method="POST" action="{{ url('utilidades_api_rest_post') }}">
+
+
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{ app.flashes('css')[0] }} alert-dismissible fade show" role="alert">
+  
+    <strong>RESPUESTA {{ app.flashes('respuesta')[0] }}</strong> {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+
+    <label>Titulo</label>
+    {{ form_widget(form.title, {"required":false})}}
+    <label>Cuerpo</label>
+    {{ form_widget(form.body, {"required":false})}}
+
+    <label>Id (usuario)</label>
+    {{ form_widget(form.userId, {"required":false})}}
+
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+
+    <hr>
+
+    <button type="submit" class="btn btn-dark">Crear</button>
+
+
+</form>
+
+{% endblock %}

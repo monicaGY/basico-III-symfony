@@ -1,0 +1,17 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_pdf')}}">Crear PDF</a></li>
+
+</ol>
+</nav>
+<h1>Crear pdf</h1>
+<p>composer require dompdf/dompdf</p>
+<a href="{{ path('utilidades_pdf_generar') }}" class="btn btn-dark" target="_blank">Crear</a>
+{% endblock %}

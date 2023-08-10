@@ -1,0 +1,17 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_fileSystem')}}">Fyle System</a></li>
+
+</ol>
+</nav>
+<h1>Fyle System Component</h1>
+
+<p>composer require symfony/filesystem</p>
+{% endblock %}

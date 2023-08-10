@@ -1,0 +1,56 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_api_rest_acciones')}}">API REST II</a></li>
+</ol>
+</nav>
+<h1>API REST</h1>
+
+<p><strong>API REST II:</strong></p>
+
+<a class="btn btn-success mb-3" href="{{path('utilidades_api_rest_añadir')}}">Añadir</a></button>
+{% for menssage in app.flashes('mensaje') %}
+<div class="alert alert-{{ app.flashes('css')[0] }} alert-dismissible fade show" role="alert" >
+  
+    <strong>RESPUESTA {{ app.flashes('respuesta')[0] }}</strong> {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{% endfor %}
+
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Acción</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for dato in response.toArray() %}
+        <tr>
+            <td>{{ dato.id }}</td>
+            <td>{{ dato.nombre}}</td>
+            <td>{{ dato.slug}}</td>
+            <td class="d-flex gap-2">
+                <a class="btn btn-dark " href="{{ path('utilidades_api_rest_modificar', {id: dato.id }) }}">Editar</a></button>
+                <a class="btn btn-danger " href="{{ path('utilidades_api_rest_eliminar', {id: dato.id }) }}">Eliminar</a></button>
+
+            </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

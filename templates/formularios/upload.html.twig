@@ -1,0 +1,65 @@
+{% extends 'frontend.html.twig' %}
+{% block body %}
+
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('form_inicio')}}">Formulario</a></li>
+<li class="breadcrumb-item"><a href="{{path('form_upload')}}">Formulario upload</a></li>
+</ol>
+</nav>
+<h1>Formulario upload</h1>
+{# {{form(formulario)}} #}
+{% if errors %}
+<div class="alert alert-danger alert-dismissible fade show">
+    <ul>
+    {% for error in errors %}
+        <li>{{error.message}}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+{# importante  enctype -> para subir archivos al servidor #}
+<form method="POST" action="{{url('form_upload')}}" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="form_nombre">Nombre:</label>
+        {{form_widget(formulario.nombre, {"attr":{"placeholder":"Escribe tu nombre", "name":"nombre"}})}}
+    </div>
+
+    <div class="form-group">
+        <label for="form_correo">Correo:</label>
+        {{form_widget(formulario.correo)}}
+    </div>
+
+    <div class="form-group">
+        <label for="form_telefono">Teléfono:</label>
+        {{form_widget(formulario.telefono)}}
+    </div>
+
+    <div class="form-group">
+        <label for="form_pais">País:</label>
+        {{form_widget(formulario.pais)}}
+    </div>
+
+    <div class="form-group">
+        <label for="form_foto">Foto (JPG|PNG):</label>
+        {{form_widget(formulario.foto)}}
+    </div>
+
+
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+    <hr/>
+
+
+    {{form_widget(formulario.save, {'label': 'Click me'})}}
+
+</form>
+{% endblock %}

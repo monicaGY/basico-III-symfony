@@ -1,0 +1,17 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_mail')}}">Envío de email</a></li>
+</ol>
+</nav>
+<h1>Enviar email</h1>
+<ul>
+    <li><a href="{{path('utilidades_mail')}}">Envio de e-mail</a></li>
+</ul>
+{% endblock %}

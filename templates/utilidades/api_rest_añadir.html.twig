@@ -1,0 +1,33 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Utilidades{% endblock %}
+
+{% block body %}
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('post', {id:12})}}">Home</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('utilidades_api_rest_acciones')}}">API REST II</a></li>
+<li class="breadcrumb-item"><a href="{{path('utilidades_api_rest_añadir')}}">Añadir elemento</a></li>
+
+</ol>
+</nav>
+<h1>Añadir elemento</h1>
+
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{ app.flashes('css')[0] }} alert-dismissible fade show" role="alert">
+  
+    <strong>RESPUESTA {{ app.flashes('respuesta')[0] }}</strong> {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+
+<form method="POST" action="{{ url('utilidades_api_rest_añadir') }}">
+    <label>Acción: </label>
+    {{ form_widget(form.nombre)}}
+    <button type="submit" class="mt-2 btn btn-dark">Añadir</button>
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+
+</form>
+{% endblock %}

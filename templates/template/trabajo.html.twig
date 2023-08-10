@@ -1,0 +1,41 @@
+{% extends 'frontend.html.twig' %}
+{% block body %}
+<h1>Bienvenido  {{nombre}}</h1>
+Me llamo {{nombre}} y tengo {{edad}} años
+
+
+{% set edad = 42 %}
+
+<p> Tu edad es {{edad}}</p>
+
+{{dump(paises)}}
+
+<p>
+{% if edad <= 18 %}
+    es menor de edad
+{% else %}
+    es mayor de edad
+{% endif %}
+</p>
+
+<h3>Países</h3>
+
+<ul>
+{% for pais in paises %}
+    <li>Nombre: {{pais.nombre}} | ID: {{pais.id}}</li>
+{% endfor %}
+</ul>
+
+{{include('include.html.twig')}}
+
+{% set html = '<b>Soy un texto en negrita</b>'%}
+
+{{html|raw}}
+
+
+<p><a href="{{path('template_excepcion')}}">Ir a excepcion</a></p>
+
+<p><a href ="{{path('template_parametros', {id:12, palabra:'Pasando parámetros'})}}">Pasar parametros</a></p>
+
+<p><a href="{{path('template_layout')}}">Ir a layout</a></p>
+{% endblock %}
