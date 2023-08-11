@@ -1,0 +1,45 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Doctrine{% endblock %}
+
+{% block body %}
+<h1>Editar</h1>
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('inicio_doctrine')}}">Doctrine</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_categoria')}}">Categorías</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_categoria_editar', {id: categoria.id})}}">Editar</a></li>
+
+</ol>
+</nav>
+{% if errors  %}
+<div class="alert alert-danger alert-dismissible fade show">
+    <ul>
+    {% for error in errors %}
+        <li>{{error.message}}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{app.flashes('css')[0]}} alert-dismissible fade show" role="alert">
+  {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+<form method="POST" action="{{url('doctrine_categoria_editar', {id: categoria.id})}}">
+    <div class="form-group">
+        <label for="form_nombre">Nombre:</label>
+        {{form_widget(formulario.nombre, {"attr":{"placeholder":"Escribe ..."}})}}
+    </div>
+
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+    <hr/>
+
+    <button class="btn btn-dark">Modificar</button>
+</form>
+
+
+
+{% endblock %}

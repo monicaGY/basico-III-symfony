@@ -89,4 +89,55 @@ class DoctrineController extends AbstractController
         }
         return $this->render('doctrine/añadir.html.twig',['formulario'=> $form, 'errors'=> array()]);
     }
+
+    #[Route('/doctrine/categoria/editar/{id}', name: 'doctrine_categoria_editar')]
+    public function categoria_editar(Request $request, int $id, ValidatorInterface $validator,SluggerInterface $slugger): Response
+    {
+        //select * from categoria c where c.id = {id}
+        $categoria = $this->em->getRepository(Categoria::class)->find($id);
+
+        if(!$categoria){
+            throw $this->createNotFoundException(
+                "Esta url no esta disponible"
+            );
+        }
+
+        $form = $this->createForm(CategoriaFormType::class, $categoria);
+        $form->handleRequest($request);
+        $submiteddToken = $request->request->get('token');
+
+        if($form->isSubmitted())
+        {
+
+            if($this->isCsrfTokenValid('generico',$submiteddToken))
+            {
+                $errors = $validator->validate($categoria);
+                if(count($errors) > 0)
+                {
+                    return $this->render('doctrine/categoria_editar.html.twig', ['formulario' => $form, 'errors' => $errors]);
+
+                }else{
+                    $campos = $form->getData();
+                    $categoria->setNombre($campos->getNombre());
+                    //crear slug
+                    $categoria->setSlug($slugger->slug($campos->getNombre()));
+
+                    //aplicar el cambio
+                    $this->em->flush();
+
+                    $this->addFlash('css','success');
+                    $this->addFlash('mensaje','Se modificó el registro');
+                    return $this->redirectToRoute('doctrine_categoria_editar', ['id'=> $categoria->getId()]);
+                }
+
+
+            }else{
+                $this->addFlash('css','warning');
+                $this->addFlash('mensaje','Ocurrió un error inesperado');
+                return $this->redirectToRoute('doctrine_categoria_editar');
+            }
+
+        }
+        return $this->render('doctrine/categoria_editar.html.twig',['formulario'=> $form, 'errors'=> array(), 'categoria'=> $categoria]);
+    }
 }

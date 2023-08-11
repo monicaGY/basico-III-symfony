@@ -30,6 +30,7 @@
                 <td>{{ dato.id }}</td>
                 <td>{{ dato.nombre }}</td>
                 <td>{{ dato.slug }}</td>
+                <td style="text-align:center"><a href="{{path('doctrine_categoria_editar', {id:dato.id})}}"class="btn btn-dark">Editar</a></td>
             </tr>
 
         {% endfor %}
