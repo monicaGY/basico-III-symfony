@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CategoriaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoriaRepository::class)]
 class Categoria
@@ -13,7 +14,7 @@ class Categoria
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100),Assert\NotBlank(message:'El nombre es obligatorio')]
     private ?string $nombre = null;
 
     #[ORM\Column(length: 100)]
