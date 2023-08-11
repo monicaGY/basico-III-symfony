@@ -1,0 +1,36 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Doctrine{% endblock %}
+
+{% block body %}
+<h1>Categorias</h1>
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('inicio_doctrine')}}">Doctrine</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_categoria')}}">Categorías</a></li>
+</ol>
+</nav>
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dato in datos %}
+            <tr>
+                <td>{{ dato.id }}</td>
+                <td>{{ dato.nombre }}</td>
+                <td>{{ dato.slug }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
