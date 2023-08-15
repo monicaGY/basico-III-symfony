@@ -1,0 +1,56 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Doctrine{% endblock %}
+
+{% block body %}
+<h1>Productos</h1>
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('inicio_doctrine')}}">Doctrine</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_productos')}}">Productos</a></li>
+</ol>
+</nav>
+<p class="d-flex justify-content-end">
+    <a class="btn btn-success" href="{{ path('doctrine_añadir')}}">Crear</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categoria</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Descripcion</th>
+                <th>Fotos</th>
+                <th>Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for dato in datos %}
+            <tr>
+                <td>{{ dato.id }}</td>
+                <td>
+                    <a href="#">{{ dato.getCategoria.nombre }}</a>
+                </td>
+                <td>{{ dato.nombre }}</td>
+                <td>${{ dato.precio|number_format(0,'','.') }}</td>
+                <td>{{ dato.stock }}</td>
+                <td>{{ dato.descripcion |slice(0,80)}}...</td>
+                <td>foto</td>
+                <td style="text-align:center" class="d-flex gap-2">
+                    <a href="{{path('doctrine_categoria_editar', {id:dato.id})}}"class="btn btn-dark">Editar</a>
+                    <a data-producto="{{ dato.id }}" class="btnEliminar btn btn-danger">X</a>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 //procesar la información
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+
+use App\Entity\Producto;
 class DoctrineController extends AbstractController
 {
     private $em;
@@ -156,5 +158,15 @@ class DoctrineController extends AbstractController
         $this->addFlash('css','success');
         $this->addFlash('mensaje','Eliminado correctamente');
         return $this->redirectToRoute('doctrine_categoria');
+    }
+
+    #[Route('/doctrine/productos', name: 'doctrine_productos')]
+    // public function categorias(EntityManagerInterface $em): Response
+    public function productos(): Response
+    {
+        // obtener datos
+        $datos = $this->em->getRepository(Producto::class)->findAll();
+
+        return $this->render('doctrine/productos.html.twig',compact('datos'));
     }
 }
