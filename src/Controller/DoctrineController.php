@@ -18,6 +18,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 use App\Entity\Producto;
+//paginacion
+use Knp\Component\Pager\PaginatorInterface;
 class DoctrineController extends AbstractController
 {
     private $em;
@@ -161,12 +163,20 @@ class DoctrineController extends AbstractController
     }
 
     #[Route('/doctrine/productos', name: 'doctrine_productos')]
-    // public function categorias(EntityManagerInterface $em): Response
     public function productos(): Response
     {
         // obtener datos
         $datos = $this->em->getRepository(Producto::class)->findAll();
 
         return $this->render('doctrine/productos.html.twig',compact('datos'));
+    }
+
+    #[Route('/doctrine/productos/paginacion', name: 'doctrine_productos_paginacion')]
+    public function productos_paginacion(PaginatorInterface $paginator, Request $request): Response
+    {
+        $datos = $this->em->getRepository(Producto::class)->findAll();
+        $paginator = $paginator->paginate($datos,$request->query->getInt('page', 1),
+        2);
+        return $this->render('doctrine/productos_paginacion.html.twig',compact('datos','paginator'));
     }
 }
