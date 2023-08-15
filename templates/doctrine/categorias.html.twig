@@ -11,12 +11,32 @@
 </ol>
 </nav>
 
+
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{app.flashes('css')[0]}} alert-dismissible fade show" role="alert">
+  {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+
+
 <p class="d-flex justify-content-end">
     <a class="btn btn-success" href="{{ path('doctrine_añadir')}}">Crear</a>
 </p>
 
 <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover">
+        <div id="alertDelete" class="d-none alert position-relative" style="text-align:center">
+            <div style="top:200px; left: 10%; z-index: 1;" class="position-absolute alert alert-dark alert-dismissible fade show" role="alert">
+              <strong class="fs-3">¿Estás seguro de eliminar el registro?</strong> 
+              <div >
+                    <a id="btnRespuestaEliminar" class="btn btn-dark" href="#">Sí</a>
+                    <a id="btnRespuestaCancelar" class="btn btn-dark "  href="#">No</a>
+
+              </div>
+            </div>
+        </div>
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,7 +50,11 @@
                 <td>{{ dato.id }}</td>
                 <td>{{ dato.nombre }}</td>
                 <td>{{ dato.slug }}</td>
-                <td style="text-align:center"><a href="{{path('doctrine_categoria_editar', {id:dato.id})}}"class="btn btn-dark">Editar</a></td>
+                <td style="text-align:center">
+                    <a href="{{path('doctrine_categoria_editar', {id:dato.id})}}"class="btn btn-dark">Editar</a>
+                    <a data-producto="{{ dato.id }}" class="btnEliminar btn btn-danger">X</a>
+                </td>
+
             </tr>
 
         {% endfor %}

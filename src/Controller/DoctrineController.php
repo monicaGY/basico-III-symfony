@@ -140,4 +140,21 @@ class DoctrineController extends AbstractController
         }
         return $this->render('doctrine/categoria_editar.html.twig',['formulario'=> $form, 'errors'=> array(), 'categoria'=> $categoria]);
     }
+    #[Route('/doctrine/categoria/eliminar/{id}', name: 'doctrine_categoria_eliminar')]
+    public function categoria_eliminar(Request $request, int $id, ValidatorInterface $validator,SluggerInterface $slugger): Response
+    {
+        $categoria = $this->em->getRepository(Categoria::class)->find($id);
+
+        if(!$categoria){
+            throw $this->createNotFoundException(
+                "Esta url no esta disponible"
+            );
+        }
+
+        $this->em->remove($categoria);
+        $this->em->flush();
+        $this->addFlash('css','success');
+        $this->addFlash('mensaje','Eliminado correctamente');
+        return $this->redirectToRoute('doctrine_categoria');
+    }
 }
