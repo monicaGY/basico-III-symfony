@@ -193,4 +193,20 @@ class DoctrineController extends AbstractController
 
         return $this->render('doctrine/productos_categoria.html.twig',compact('datos', 'categoria'));
     }
+
+    #[Route('/doctrine/productos/buscador', name: 'doctrine_productos_buscador')]
+    public function productos_buscador(): Response
+    {
+        $nombreProducto = $_GET['nombre'];
+
+        $datos = $this->em
+            ->getRepository(Producto::class)
+            ->createQueryBuilder('p')
+            ->andWhere('p.nombre LIKE :buscador')
+            ->setParameter('buscador','%'.$nombreProducto.'%')
+            ->getQuery()
+            ->getResult();
+
+        return $this-> render('doctrine/productos_buscador.html.twig',compact('datos','nombreProducto'));
+    }
 }
