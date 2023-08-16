@@ -179,4 +179,18 @@ class DoctrineController extends AbstractController
         2);
         return $this->render('doctrine/productos_paginacion.html.twig',compact('datos','paginator'));
     }
+
+    #[Route('/doctrine/productos/categoria/{categoria_id}', name: 'doctrine_productos_categoria')]
+    public function productos_categoria(int $categoria_id): Response
+    {
+        // obtener datos
+        $categoria = $this->em->getRepository(Categoria::class)->find($categoria_id);
+
+        if(!$categoria){
+            throw $this->createNotFoundException('Esta URL no existe');
+        }
+        $datos = $this->em->getRepository(Producto::class)->findBy(array('categoria'=>$categoria_id),array('id'=>'desc'));
+
+        return $this->render('doctrine/productos_categoria.html.twig',compact('datos', 'categoria'));
+    }
 }
