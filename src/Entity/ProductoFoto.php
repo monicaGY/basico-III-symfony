@@ -16,10 +16,9 @@ class ProductoFoto
     #[ORM\Column(length: 100), Assert\File(
         maxSize:"10M",
         mimeTypes: [
-            "img/jpeg",
-            "img/jpg",
-            "img/png",
-            "img/gif",
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
         ],
         mimeTypesMessage: "La foto debe ser PNG | JPG | PNEG | GIF",
         maxSizeMessage: "La foto no puede pesar más de 10 megabytes"

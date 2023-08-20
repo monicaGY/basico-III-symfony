@@ -12,20 +12,36 @@
 
 </ol>
 </nav>
-{# INICIO ---> BUSCADOR #}
-<form name="form_search" action="{{path('doctrine_productos_buscador')}}" method="GET">
-    <div class="input-group gap-3 mb-3">
-      <input type="search" name="nombre"id="tInpBuscador"class="form-control rounded" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon" />
-      <a type="button" class="btn btn-outline-primary" onclick="buscador()">search</a>
-    </div>
-</form>
-{# FIN ---> BUSCADOR #}
+
 
 <h4>{{datos.nombre}}</h4>
-<p class="d-flex justify-content-end">
-    <a class="btn btn-success" href="{{ path('doctrine_añadir')}}">Crear</a>
-</p>
+{# //---------------------ALERTA DE ERRORES #}
+{% if errors  %}
+<div class="alert alert-danger alert-dismissible fade show">
+    <ul>
+    {% for error in errors %}
+        <li>{{error.message}}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{app.flashes('css')[0]}} alert-dismissible fade show" role="alert">
+  {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
+</div>
+{% endfor %}
+
+{# //---------------formulario #}
+<form method="POST" action="{{path('doctrine_productos_foto', {id: datos.id})}}" enctype="multipart/form-data" class="m-3">
+{{form_widget(form.foto)}}
+
+    <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+    <hr/>
+
+    <button class="btn btn-dark">Añadir</button>
+</form>
 <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover">
         

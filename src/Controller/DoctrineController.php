@@ -21,6 +21,7 @@ use App\Entity\Producto;
 //paginacion
 use Knp\Component\Pager\PaginatorInterface;
 
+use App\Form\ProductoFotoType;
 use App\Entity\ProductoFoto;
 class DoctrineController extends AbstractController
 {
@@ -213,7 +214,7 @@ class DoctrineController extends AbstractController
     }
 
     #[Route('/doctrine/productos/foto/{id}', name: 'doctrine_productos_foto')]
-    public function productos_foto(Request $request, int $id): Response
+    public function productos_foto(Request $request, int $id, ValidatorInterface $validator,SluggerInterface $slugger): Response
     {
         $producto = $this->em->getRepository(Producto::class)->find($id);
 
@@ -223,6 +224,67 @@ class DoctrineController extends AbstractController
 
         $fotos = $this->em->getRepository(ProductoFoto::class)->findBy(array('producto'=>$id),array('id'=>'desc'));
 
-        return $this-> render('doctrine/productos_foto.html.twig',['datos'=>$producto, 'fotos'=> $fotos]);
+
+        //subir foto de un producto
+        $productoFoto = new ProductoFoto();
+        $form = $this->createForm(ProductoFotoType::class, $productoFoto);
+        $form->handleRequest($request);
+        $submiteddToken = $request->request->get('token');
+
+
+        if($form->isSubmitted())
+        {
+
+            if($this->isCsrfTokenValid('generico',$submiteddToken))
+            {
+                $errors = $validator->validate($productoFoto);
+                if(count($errors) > 0)
+                {
+                    return $this->render('doctrine/doctrine_productos_foto.html.twig', [
+                        'datos'=>$producto, 
+                        'fotos'=> $fotos, 
+                        'form' => $form, 
+                        'errors' => $errors]);
+
+                }else{
+                    $foto = $form->get('foto')->getData();
+                    if($foto){
+                        //nombre del archivo
+                        $newFileName = time().'.'.$foto->guessExtension();
+
+                        //subir el archivo
+                        try{
+                            $foto->move(
+                                $this->getParameter('fotos_directory'), $newFileName
+                            );
+                        }catch(FileException $e){
+                            throw new \Exception("mensaje","Ups, ocurrió un error al intentar subir el archivo");
+                        }
+                        
+                    }
+                    $productoFoto->setProducto($producto);
+                    $productoFoto->setFoto($newFileName);
+                    $this->em->persist($productoFoto);
+                    $this->em->flush();
+
+                    $this->addFlash('css','success');
+                    $this->addFlash('mensaje','Se modificó el registro');
+                    return $this->redirectToRoute('doctrine_productos_foto', ['id'=> $id]);
+                }
+
+
+            }else{
+                $this->addFlash('css','warning');
+                $this->addFlash('mensaje','Ocurrió un error inesperado');
+                return $this->redirectToRoute('doctrine_productos_foto', ['id'=> $id]);
+            }
+
+        }
+        return $this-> render('doctrine/productos_foto.html.twig',[
+            'datos'=>$producto, 
+            'fotos'=> $fotos, 
+            'form' => $form,
+            'errors'=> array()
+        ]);
     }
 }
