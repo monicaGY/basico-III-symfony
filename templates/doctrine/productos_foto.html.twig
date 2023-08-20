@@ -1,0 +1,60 @@
+{% extends 'frontend.html.twig' %}
+
+{% block title %}Doctrine{% endblock %}
+
+{% block body %}
+<h1>Productos</h1>
+<nav class="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('inicio_doctrine')}}">Doctrine</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_productos')}}">Productos</a></li>
+<li class="breadcrumb-item"><a class="p-2 link-secondary" href="{{path('doctrine_productos_foto',{'id':datos.id})}}">Productos foto</a></li>
+
+</ol>
+</nav>
+{# INICIO ---> BUSCADOR #}
+<form name="form_search" action="{{path('doctrine_productos_buscador')}}" method="GET">
+    <div class="input-group gap-3 mb-3">
+      <input type="search" name="nombre"id="tInpBuscador"class="form-control rounded" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon" />
+      <a type="button" class="btn btn-outline-primary" onclick="buscador()">search</a>
+    </div>
+</form>
+{# FIN ---> BUSCADOR #}
+
+<h4>{{datos.nombre}}</h4>
+<p class="d-flex justify-content-end">
+    <a class="btn btn-success" href="{{ path('doctrine_añadir')}}">Crear</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        
+        <thead>
+            <tr>
+                <th>Fotos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for foto in fotos %}
+        <tr>
+            <td>
+                <img src="{{absolute_url(asset('uploads/fotos/'))}}{{foto.foto}}" width="100" height="100"/>
+            </td>
+            <td>
+                <a class="btn btn-dark"> Eliminar foto</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+function buscador(){
+    if(document.getElementById('tInpBuscador').value === 0){
+        return false;
+    }
+    document.form_search.submit()
+}
+</script>
+{% endblock %}

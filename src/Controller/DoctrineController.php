@@ -20,6 +20,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Producto;
 //paginacion
 use Knp\Component\Pager\PaginatorInterface;
+
+use App\Entity\ProductoFoto;
 class DoctrineController extends AbstractController
 {
     private $em;
@@ -208,5 +210,19 @@ class DoctrineController extends AbstractController
             ->getResult();
 
         return $this-> render('doctrine/productos_buscador.html.twig',compact('datos','nombreProducto'));
+    }
+
+    #[Route('/doctrine/productos/foto/{id}', name: 'doctrine_productos_foto')]
+    public function productos_foto(Request $request, int $id): Response
+    {
+        $producto = $this->em->getRepository(Producto::class)->find($id);
+
+        if(!$producto){
+            throw $this->createNotFoundException('Esta URL no existe');
+        }
+
+        $fotos = $this->em->getRepository(ProductoFoto::class)->findBy(array('producto'=>$id),array('id'=>'desc'));
+
+        return $this-> render('doctrine/productos_foto.html.twig',['datos'=>$producto, 'fotos'=> $fotos]);
     }
 }

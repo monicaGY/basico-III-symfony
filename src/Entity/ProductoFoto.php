@@ -13,7 +13,17 @@ class ProductoFoto
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100), Assert\File(
+        maxSize:"10M",
+        mimeTypes: [
+            "img/jpeg",
+            "img/jpg",
+            "img/png",
+            "img/gif",
+        ],
+        mimeTypesMessage: "La foto debe ser PNG | JPG | PNEG | GIF",
+        maxSizeMessage: "La foto no puede pesar más de 10 megabytes"
+    )]
     private ?string $foto = null;
 
     #[ORM\ManyToOne]

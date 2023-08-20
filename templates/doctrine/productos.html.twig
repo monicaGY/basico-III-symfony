@@ -50,7 +50,7 @@
                 <td>${{ dato.precio|number_format(0,'','.') }}</td>
                 <td>{{ dato.stock }}</td>
                 <td>{{ dato.descripcion |slice(0,80)}}...</td>
-                <td>foto</td>
+                <td><a href="{{path('doctrine_productos_foto',{id:dato.id})}}">Ver foto</a></td>
                 <td style="text-align:center" class="d-flex gap-2">
                     <a href="{{path('doctrine_categoria_editar', {id:dato.id})}}"class="btn btn-dark">Editar</a>
                     <a data-producto="{{ dato.id }}" class="btnEliminar btn btn-danger">X</a>
