@@ -287,4 +287,24 @@ class DoctrineController extends AbstractController
             'errors'=> array()
         ]);
     }
+    #[Route('/doctrine/productos/foto/eliminar/{id}', name: 'doctrine_productos_foto_eliminar')]
+    public function productos_foto_eliminar(Request $request, int $id, ValidatorInterface $validator,SluggerInterface $slugger): Response
+    {
+        $producto_foto = $this->em->getRepository(ProductoFoto::class)->find($id);
+        $producto_id = $producto_foto->getProducto()->getId();
+
+        if(!$producto_foto){
+            throw $this->createNotFoundException('Esta URL no existe');
+        }
+
+        //eliminar un archivo del sistema de archivos del servidor
+        unlink(getcwd().'/uploads/fotos/'.$producto_foto->getFoto());
+
+        $this->em->remove($producto_foto);
+        $this->em->flush();
+        $this->addFlash('css','success');
+        $this->addFlash('mensaje','Eliminado correctamente');
+        return $this->redirectToRoute('doctrine_productos_foto', ['id'=> $producto_id]);
+    
+    }
 }

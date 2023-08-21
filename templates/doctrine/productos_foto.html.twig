@@ -58,7 +58,7 @@
                 <img src="{{absolute_url(asset('uploads/fotos/'))}}{{foto.foto}}" width="100" height="100"/>
             </td>
             <td>
-                <a class="btn btn-dark"> Eliminar foto</a>
+                <a class="btn btn-dark" href="{{path('doctrine_productos_foto_eliminar',{id: foto.id})}}"> Eliminar foto</a>
             </td>
         </tr>
         {% endfor %}
