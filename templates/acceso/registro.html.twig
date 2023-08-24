@@ -1,6 +1,42 @@
 {% extends 'frontend.html.twig' %}
 
-{% block title %}Security{% endblock %}
+{% block title %}Registro{% endblock %}
 
 {% block body %}
+{# INICIO -- ALERTAS #}
+{% if errors  %}
+<div class="alert alert-danger alert-dismissible fade show">
+    <ul>
+    {% for error in errors %}
+        <li>{{error.message}}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% for menssage in app.flashes('mensaje')%}
+<div class="alert alert-{{app.flashes('css')[0]}} alert-dismissible fade show" role="alert">
+  {{menssage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+{% endfor %}
+{# FIN -- ALERTAS #}
+
+
+{# INICIO -- FORMULARIO #}
+<form method="POST" action="{{path('acceso_registro')}}">
+<label>Nombre</label>
+{{ form_widget(form.nombre, {"required":false, "attr":{"placeholder":"Escribe ..."}}) }}
+
+<label>E-mail</label>
+{{ form_widget(form.email, {"required":false, "attr":{"placeholder":"Escribe ..."}}) }}
+<label>Contraseña</label>
+{{ form_widget(form.password, {"required":false, "attr":{"placeholder":"Escribe ..."}}) }}
+
+ <input type="hidden" name="token" value="{{csrf_token('generico')}}"/>
+<hr/>
+<button type="submit" class="btn btn-dark">Enviar</button>
+</form>
+{# FIN -- FORMULARIO #}
+
 {% endblock %}
