@@ -16,6 +16,8 @@ use App\Entity\Usuario;
 
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+use Symfony\Bundle\SecurityBundle\Security;
+use App\Form\LoginType;
 class AccesoController extends AbstractController
 {
     private $em;
@@ -25,12 +27,63 @@ class AccesoController extends AbstractController
     }
 
     #[Route('/acceso/login', name: 'acceso_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request,Security $security, ValidatorInterface $validator, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $last_username = $authenticationUtils->getLastUsername();        
-        return $this->render('acceso/login.html.twig', compact('error','last_username'));
+        $entity = new Usuario();
+        $form = $this->createForm(LoginType::class, $entity);
+        $form->handleRequest($request);
+        $submiteddToken = $request->request->get('token');
+        if($form->isSubmitted())
+        {
+            if($this->isCsrfTokenValid('generico',$submiteddToken))
+            {
+                $errors = $validator->validate($entity);
+                if(count($errors) > 0)
+                {
+                    return $this->render('acceso/login_normal.html.twig', ['form' => $form, 'errors' => $errors]);
+
+                }
+                else{
+                    $campos = $form->getData();
+                    $user = $this->em->getRepository(Usuario::class)->findOneBy([
+                        'email'=>$campos->getEmail()
+                    ]);
+
+                    if(!$user){
+                        $this->addFlash('css','danger');
+                        $this->addFlash('mensaje','Las datos son incorrectos');
+                        return $this->redirectToRoute('acceso_login');
+                    }
+
+                    if($passwordHasher->isPasswordValid($user, $campos->getPassword())){
+                        $security->login($user);
+                        return $this->redirectToRoute('restringido_inicio');
+                    }else{
+                        $this->addFlash('css','danger');
+                        $this->addFlash('mensaje','Las datos son incorrectos');
+                        return $this->redirectToRoute('acceso_login');
+                    }
+                }
+
+            }else{
+                $this->addFlash('css','warning');
+                $this->addFlash('mensaje','Ocurrió un error inesperado');
+                return $this->redirectToRoute('acceso_login');
+            }
+        }
+    
+        return $this->render('acceso/login_normal.html.twig', ["form"=> $form, "errors"=>array()]);
     }
+
+    // en este método la autenticacion se encarga symfony
+    // para poder utilizar este método descomentar check_path: acceso_login en security.yaml
+    // #[Route('/acceso/login', name: 'acceso_login')]
+    // public function login(AuthenticationUtils $authenticationUtils): Response
+    // {
+    //     $error = $authenticationUtils->getLastAuthenticationError();
+    //     $last_username = $authenticationUtils->getLastUsername();        
+    //     return $this->render('acceso/login.html.twig', compact('error','last_username'));
+    // }
 
     #[Route('/acceso/registro', name: 'acceso_registro')]
     public function registro(Request $request, ValidatorInterface $validator, UserPasswordHasherInterface $passwordHasher): Response
