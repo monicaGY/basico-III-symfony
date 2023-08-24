@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Form\UserFormType;
 use App\Entity\Usuario;
 
+
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 class AccesoController extends AbstractController
 {
     private $em;
@@ -22,9 +25,11 @@ class AccesoController extends AbstractController
     }
 
     #[Route('/acceso/login', name: 'acceso_login')]
-    public function login(): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('acceso/login.html.twig');
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $last_username = $authenticationUtils->getLastUsername();        
+        return $this->render('acceso/login.html.twig', compact('error','last_username'));
     }
 
     #[Route('/acceso/registro', name: 'acceso_registro')]
