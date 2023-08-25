@@ -15,5 +15,20 @@ function setup(){
     } )
     
     
-    document.querySelectorAll
 }
+
+
+function cerrarSesion(ruta){
+    swal({
+      title: "¿Desea cerrar sesión?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "Cancelar",
+    })
+    .then(resultado => {
+      if (resultado.value) {
+        window.location = ruta;
+      }
+    });
+  }

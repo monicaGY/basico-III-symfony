@@ -137,4 +137,9 @@ class AccesoController extends AbstractController
 
         return $this->render('acceso/registro.html.twig', ['form' => $form, 'errors' => array()]);
     }
+    #[Route('/acceso/logout', name: 'acceso_logout')]
+    public function acceso_logout(){
+
+    }
+
 }

@@ -20,6 +20,9 @@ security:
             form_login:
                 login_path: acceso_login
                 # check_path: acceso_login
+            logout:
+                path: acceso_logout
+                target: acceso_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
