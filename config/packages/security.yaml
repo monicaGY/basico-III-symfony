@@ -34,6 +34,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/doctrine, roles: ROLE_USER }
+        - { path: ^/restringido, roles: ROLE_USER }
 
 when@test:
     security:

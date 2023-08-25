@@ -4,4 +4,8 @@
 
 {% block body %}
 <h1>Acceso restringido</h1>
+<p>Nombre: {{app.user.nombre}}</p>
+<p>E-mail: {{app.user.email}}</p>
+<p>Rol: {{app.user.getRoles()[0]}}</p>
+
 {% endblock %}

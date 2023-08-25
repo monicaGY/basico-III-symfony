@@ -98,9 +98,22 @@
           <a class="p-2 link-secondary" href="{{path('template_trabajo')}}">Trabajo</a>
           <a class="p-2 link-secondary" href="{{path('form_inicio')}}">Formulario</a>
           <a class="p-2 link-secondary" href="{{path('utilidades_inicio')}}">Utilidades</a>
+          {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
+
           <a class="p-2 link-secondary" href="{{path('inicio_doctrine')}}">Doctrine</a>
+          {% endif %}
+
+          {# si esta logeado desaparece los enlaces #}
+          {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+
           <a class="p-2 link-secondary" href="{{path('acceso_login')}}">Login</a>
           <a class="p-2 link-secondary" href="{{path('acceso_registro')}}">Registro</a>
+          {% endif %}
+
+          {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
+
+          <a class="p-2 link-secondary" href="{{path('restringido_inicio')}}">Restringido</a>
+          {% endif %}
 
         </nav>
       </div>
