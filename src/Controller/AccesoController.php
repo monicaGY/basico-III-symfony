@@ -18,11 +18,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\LoginType;
+// Para las sesiones: composer require symfony/http-foundation
+use Symfony\Component\HttpFoundation\RequestStack;
+
 class AccesoController extends AbstractController
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $em){
+    public function __construct(EntityManagerInterface $em, private RequestStack $requestStack){
         $this->em = $em;
     }
 
@@ -57,6 +60,9 @@ class AccesoController extends AbstractController
 
                     if($passwordHasher->isPasswordValid($user, $campos->getPassword())){
                         $security->login($user);
+                        //iniciamos la sesión
+                        $session = $this->requestStack->getSession();
+                        $session->set('perfil_nombre','Administrador');
                         return $this->redirectToRoute('restringido_inicio');
                     }else{
                         $this->addFlash('css','danger');
