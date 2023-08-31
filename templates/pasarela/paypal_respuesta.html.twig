@@ -1,0 +1,14 @@
+{% extends 'frontend.html.twig' %}
+{% block title %}Pasarela{% endblock %}
+{% block body %}
+{% if estado == 'okey' %}
+<div class="alert alert-success">
+Tu pago se gestionó correctamente con el número de transacción <strong>{{id}}</strong>
+</div>
+{% endif %}
+{% if estado == 'error' %}
+<div class="alert alert-danger">
+La transacción <strong>{{id}}</strong> ya esta caducada</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'frontend.html.twig' %}
+{% block title %}Pasarela{% endblock %}
+{% block body %}
+<h1>Pasarela PAYPAL</h1>
+
+<p><strong>Producto: </strong> movil</p>
+<p><strong>Valor: </strong>100</p>
+<p><strong>Oden de compra:</strong> orden_{{ entity.getId() }}</p>
+<p><strong>Token:</strong> {{ token }}</p>
+<p><strong>URL:</strong> {{ content['links'][1]['href'] }}</p>
+
+<a class="btn btn-dark" href="{{ content['links'][1]['href'] }}">Pagar</a>
+<a class="btn btn-dark">Cancelar</a>
+
+{% endblock %}
